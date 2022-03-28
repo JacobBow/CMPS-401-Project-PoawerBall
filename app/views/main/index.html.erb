@@ -1,0 +1,219 @@
+<script type="text/javascript" src="http://localhost:3000/assets/gameScript.js"> </script>
+
+<style>
+* {
+    # font-family: monospace;
+}
+
+.slot-number {
+    font-size: 100px;
+}
+
+.message {
+    text-align: center;
+    display: none;
+    font-size: xx-large;
+    color: red;
+}
+
+.center {
+    text-align: center;
+}
+
+.bet-input {
+    margin-left: auto;
+    margin-right: auto;
+    width: 15%;
+    border-radius: 15px;
+}
+
+.lever {
+    margin-top: 5px;
+}
+
+table.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rubyCount {
+    text-align: center;
+    font-size: 35px;
+}
+
+.rcimg {
+    margin-top: -10px;
+}
+
+.bomb {
+    margin-left: 40px;
+}
+
+.btn-primary {
+    width: 15%;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    box-shadow: 0 7px #999;
+    background-color: #000000;
+    border-color: #000000;
+}
+
+.btn-primary:hover {
+    background-color: #9b111e;
+    border-color: #9b111e;
+}
+
+.btn-primary:active {
+  transform: translateY(4px);
+  box-shadow: 0 5px #666;
+}
+
+</style>
+
+<!-- Ruby display/header -->
+<br/>
+<h1 class="rubyCount"><span id="currentRubies">Hello</span> <img class="rcimg" src="http://localhost:3000/assets/ruby.png" alt="Red Ruby" width="40" height="40" style="vertical-align:middle"></h1>
+<div class="center lever">
+        <button type="button" class="btn btn-primary" onclick="resetRubies()" id="resetRubies">Reset Rubies</button>
+    </div>
+
+<!-- Slot Game -->
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container mt-1 mb-1 center">
+        <br>
+          <h1>Spin to Win! (50 Rubies)</h1>
+        <br>
+    </div>
+    <table class="center">
+        <tbody>
+            <tr>
+                <td>
+                    <span id="item1" class="slot-number">-</span>
+                </td>
+                <td>
+                    <span id="item2" class="slot-number">-</span>
+                </td>
+                <td>
+                    <span id="item3" class="slot-number">-</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="center lever">
+        <button type="button" class="btn btn-primary" onclick="spin()">Spin!</button>
+    </div>
+    <div id="message" class="center message">
+        You Won!
+    </div>
+    <audio id="win">
+        <source src="http://localhost:3000/assets/casinowin.wav" type="audio/mpeg">
+    </audio>
+</div>
+
+<!-- Between Game -->
+<!-- i know its ugly, gonna have to style it soon -->
+<div class="jumbotron jumbotron-fluid">
+    <div class="container mt-1 mb-1 center">
+        <br>
+          <h1>Place your bet: Will the missing random number<br/>fall between these two numbers? (Range is 1-100)</h1>
+        <br>
+    </div>   
+    <table style = "margin-left:auto;margin-right:auto;text-align:center">
+        <tbody class ="center">
+            <tr>
+                <div style = "text-align:left">
+                    <td>
+                        <span id="betweenItem1" class="slot-number">-</span>
+                    </td>
+                    <td>
+                        <span id="betweenItem2" class="slot-number">-</span>
+                    </td>
+                    <td>
+                        <span id="betweenItem3" class="slot-number">-</span>
+                    </td>
+                </div>
+                <div style = "text-align:center">
+                    <td>
+                        <span id="betweenItem4" class="slot-number">-</span>
+                    </td>
+                    <td>
+                        <span id="betweenItem5" class="slot-number">-</span>
+                    </td>
+                </div>
+                <div style = "text-align:right">
+                    <td>
+                        <span id="betweenItem7" class="slot-number">1</span>
+                    </td>
+                    <td>
+                        <span id="betweenItem8" class="slot-number">0</span>
+                    </td>
+                    <td>
+                        <span id="betweenItem9" class="slot-number">0</span>
+                    </td>
+                </div>
+            </tr>
+        </tbody>
+    </table>
+    <div class="input-group mb-3">
+        <input type="text" class="bet-input" aria-label="Amount (to the nearest dollar)" id="betweenBet">
+    </div>
+    <div class="center lever">
+        <button type="button" class="btn btn-primary" onclick="spinBetween()" id="betweenSpin">Place Bet!</button>
+    </div>
+    <div id="betweenWinMessage" class="center message">
+        You won!
+    </div>
+    <audio id="win">
+        <source src="http://localhost:3000/assets/casinowin.wav" type="audio/mpeg">
+    </audio>
+</div>
+
+<!-- Defuse Game -->
+<!-- i know its ugly, gonna have to style it soon -->
+<div class="jumbotron jumbotron-fluid">
+    <div class="container mt-1 mb-1 center">
+        <br>
+          <h1>Place your bet: Before the bomb goes off, stop the<br/>
+          clock and your bet will be multiplied by the last value!<br/>
+          <br/>
+          Beware, if the bomb goes off before you stop the clock<br/>
+          you will lose that amount!</h1>
+        <br>
+    </div>
+    <table style = "margin-left:auto;margin-right:auto;text-align:center">
+        <tbody class ="center">
+            <tr>
+                <div style = "text-align:left">
+                    <td>
+                        <span id="defuseItem1" class="slot-number">-</span>
+                    </td>
+                </div>
+            </tr>
+        </tbody>
+    </table>
+    <div class="input-group mb-3">
+        <input type="text" class="bet-input" aria-label="Amount (to the nearest dollar)" id="defuseBet">
+    </div>
+    <div class="center lever">
+        <button type="button" class="btn btn-primary" onclick="spinDefuse()" id="defuseSpin">-</button>
+    </div>
+    <div class="center bomb" id="defuseBomb">
+        <img src="http://localhost:3000/assets/bomb.png" alt="Bomb" width="250" height="200"></img>
+    </div>
+    <div class="center bomb" id="defuseBoom">
+        <img src="http://localhost:3000/assets/boom.png" alt="Boom" width="250" height="200"></img>
+    </div>
+    <div id="defuseWinMessage" class="center message">
+        You Won!
+    </div>
+    <audio id="win">
+        <source src="http://localhost:3000/assets/casinowin.wav" type="audio/mpeg">
+    </audio>
+</div>
+<script>
+    loadGames()
+    const boompic = document.getElementById("defuseBoom");
+    boompic.style.display = "none";
+</script>
+
